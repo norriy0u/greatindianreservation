@@ -278,25 +278,19 @@ document.getElementById('btn-retry-loading').addEventListener('click', () => {
 });
 
 document.getElementById('btn-pay').addEventListener('click', () => {
-  const method = document.querySelector('input[name="pay"]:checked').value;
-  
   showLoading("INITIATING PAYMENT...");
   setTimeout(() => {
-    if(payFails === 0 && method === 'upi') {
+    if(payFails === 0) {
       showErrorLoading("PAYMENT GATEWAY TIMEOUT. Please try again.");
       playTrombone(); payFails++;
     } 
-    else if(payFails === 1 && method === 'upi') {
-      showErrorLoading("PAYMENT FAILED — Your bank declined. Try net banking.");
+    else if(payFails === 1) {
+      showErrorLoading("PAYMENT FAILED — Your bank declined. Try another method.");
       playTrombone(); payFails++;
     }
-    else if(method === 'net') {
+    else {
       document.getElementById('loading-text').textContent = "REDIRECTING TO BANK...";
       setTimeout(() => { hideLoading(); showFinal(); }, 2000);
-    }
-    else {
-      showErrorLoading("TRANSACTION ABORTED BY BANK.");
-      playTrombone();
     }
   }, 3500);
 });
