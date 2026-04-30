@@ -4,102 +4,294 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Great Indian Reservation</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700;900&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
-:root{--irctc-blue:#1a56db;--irctc-dark:#1e3a8a;--irctc-red:#dc2626;--bg:#f3f4f6;--text:#1f2937;--border:#cbd5e1;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
-h1,h2,h3,.rc{font-family:'Roboto Condensed',sans-serif;}
+:root {
+  --neon-blue: #3b82f6;
+  --neon-blue-glow: rgba(59, 130, 246, 0.5);
+  --neon-red: #ef4444;
+  --neon-red-glow: rgba(239, 68, 68, 0.5);
+  --dark-bg: #020617;
+  --panel-bg: rgba(15, 23, 42, 0.6);
+  --panel-border: rgba(59, 130, 246, 0.3);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+}
 
-/* NAV */
-header{background:var(--irctc-blue);color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,0.2);position:sticky;top:0;z-index:100;}
-.logo-area{display:flex;align-items:center;gap:12px;}
-.fake-logo{width:40px;height:40px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--irctc-blue);font-weight:900;font-family:'Roboto Condensed',sans-serif;font-size:1.2rem;}
-.header-nav{display:flex;gap:16px;font-size:0.85rem;}
-@media(max-width:600px){.header-nav{display:none;}}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background-color: var(--dark-bg);
+  background-image: 
+    radial-gradient(circle at 50% -20%, rgba(30, 58, 138, 0.4) 0%, transparent 60%),
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 30px 30px, 30px 30px;
+  color: var(--text-main);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+h1, h2, h3, .rc { font-family: 'Roboto Condensed', sans-serif; text-transform: uppercase; }
+
+/* HEADER */
+header {
+  background: rgba(2, 6, 23, 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--panel-border);
+  padding: 16px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+.logo-area { display: flex; align-items: center; gap: 16px; }
+.fake-logo {
+  width: 48px; height: 48px;
+  background: linear-gradient(135deg, var(--neon-blue), #1e3a8a);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-weight: 900; font-family: 'Roboto Condensed', sans-serif; font-size: 1.5rem;
+  box-shadow: 0 0 15px var(--neon-blue-glow);
+  border: 1px solid #60a5fa;
+}
+.header-nav { display: flex; gap: 24px; font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+.header-nav span { cursor: pointer; transition: 0.2s; color: var(--text-muted); }
+.header-nav span:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+@media(max-width: 600px) { .header-nav { display: none; } }
 
 /* GLOBAL TIMER */
-.global-timer{position:fixed;top:60px;right:20px;background:#fff;border:2px solid var(--irctc-blue);color:var(--irctc-blue);padding:8px 16px;border-radius:4px;font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:1.2rem;z-index:90;box-shadow:0 4px 6px rgba(0,0,0,0.1);display:none;}
-.global-timer.danger{color:var(--irctc-red);border-color:var(--irctc-red);animation:pulse-timer 1s infinite;}
-@keyframes pulse-timer{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+.global-timer {
+  position: fixed; top: 80px; right: 30px;
+  background: rgba(2, 6, 23, 0.9);
+  border: 1px solid var(--neon-blue);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 900; font-size: 1.5rem; letter-spacing: 2px;
+  z-index: 90;
+  box-shadow: 0 0 20px var(--neon-blue-glow);
+  display: none;
+  backdrop-filter: blur(10px);
+}
+.global-timer.danger {
+  color: #fff; border-color: var(--neon-red);
+  background: rgba(127, 29, 29, 0.4);
+  box-shadow: 0 0 20px var(--neon-red-glow);
+  animation: pulse-timer 1s infinite;
+}
+@keyframes pulse-timer { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
 
 /* CONTAINER & SCREENS */
-.container{max-width:800px;margin:20px auto;padding:0 16px;}
-.screen{display:none;background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.05);padding:24px;}
-.screen.active{display:block;}
+.container { max-width: 800px; margin: 40px auto; padding: 0 20px; position: relative; z-index: 10; }
+.screen {
+  display: none;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), inset 0 0 30px rgba(59, 130, 246, 0.05);
+  backdrop-filter: blur(20px);
+  padding: 30px;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.screen.active { display: block; transform: translateY(0); opacity: 1; }
 
-.screen-header{background:var(--irctc-dark);color:#fff;padding:12px 16px;margin:-24px -24px 24px -24px;border-radius:8px 8px 0 0;font-family:'Roboto Condensed',sans-serif;font-size:1.2rem;}
+.screen-header {
+  background: linear-gradient(90deg, rgba(30, 58, 138, 0.8), transparent);
+  color: #fff;
+  padding: 16px 24px;
+  margin: -30px -30px 30px -30px;
+  border-radius: 16px 16px 0 0;
+  border-bottom: 1px solid var(--panel-border);
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 2px;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  display: flex; align-items: center; gap: 10px;
+}
+.screen-header::before { content: '■'; color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); }
 
 /* BUTTONS */
-.btn{background:var(--irctc-blue);color:#fff;border:none;padding:10px 20px;font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;border-radius:4px;transition:0.2s;text-transform:uppercase;}
-.btn:hover{background:var(--irctc-dark);}
-.btn.red{background:var(--irctc-red);}
-.btn.red:hover{background:#b91c1c;}
-.btn:disabled{background:#94a3b8;cursor:not-allowed;}
+.btn {
+  background: linear-gradient(135deg, var(--neon-blue), #1e3a8a);
+  color: #fff;
+  border: 1px solid #60a5fa;
+  padding: 14px 24px;
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 900; font-size: 1.1rem; letter-spacing: 1px;
+  cursor: pointer; border-radius: 8px;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  box-shadow: 0 4px 15px var(--neon-blue-glow);
+}
+.btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px var(--neon-blue-glow);
+  background: linear-gradient(135deg, #60a5fa, #2563eb);
+}
+.btn.red {
+  background: linear-gradient(135deg, var(--neon-red), #991b1b);
+  border-color: #f87171;
+  box-shadow: 0 4px 15px var(--neon-red-glow);
+}
+.btn.red:hover:not(:disabled) {
+  box-shadow: 0 8px 25px var(--neon-red-glow);
+  background: linear-gradient(135deg, #f87171, #dc2626);
+}
+.btn:disabled {
+  background: #334155; border-color: #475569; color: #94a3b8;
+  box-shadow: none; cursor: not-allowed;
+}
 
 /* FORMS */
-.form-group{margin-bottom:16px;}
-.form-group label{display:block;font-size:0.85rem;color:#64748b;margin-bottom:6px;font-weight:600;}
-.form-control{width:100%;padding:10px;border:1px solid var(--border);border-radius:4px;font-family:'Nunito',sans-serif;font-size:1rem;}
-.form-control:focus{outline:none;border-color:var(--irctc-blue);box-shadow:0 0 0 2px rgba(26,86,219,0.2);}
+.form-group { margin-bottom: 20px; }
+.form-group label { display: block; font-size: 0.8rem; color: #cbd5e1; margin-bottom: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+.form-control {
+  width: 100%; padding: 14px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid #334155;
+  color: #fff; border-radius: 8px;
+  font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 600;
+  transition: 0.2s;
+}
+.form-control:focus { outline: none; border-color: var(--neon-blue); box-shadow: 0 0 15px rgba(59, 130, 246, 0.3), inset 0 0 10px rgba(59, 130, 246, 0.1); }
+select.form-control { appearance: none; background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23cbd5e1%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"); background-repeat: no-repeat; background-position: right 14px top 50%; background-size: 12px auto; }
+select.form-control option { background: #0f172a; color: #fff; }
 
 /* STEP 0: HOME */
-.blink-text{color:var(--irctc-red);animation:blink 0.5s infinite;font-weight:700;font-size:1.5rem;margin-bottom:20px;text-align:center;}
-@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.blink-text { color: var(--neon-red); animation: blink 0.5s infinite; font-weight: 900; font-size: 1.5rem; margin-bottom: 30px; text-align: center; text-shadow: 0 0 20px var(--neon-red); letter-spacing: 2px; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
 /* STEP 1: TRAIN LIST */
-.train-card{border:1px solid var(--border);border-radius:6px;padding:16px;margin-bottom:16px;background:#f8fafc;}
-.train-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e2e8f0;padding-bottom:12px;margin-bottom:12px;}
-.train-name{font-weight:700;font-size:1.1rem;}
-.train-number{color:#64748b;font-size:0.9rem;}
-.train-classes{display:flex;gap:10px;}
-.train-class{background:#fff;border:1px solid var(--border);padding:8px 12px;border-radius:4px;cursor:pointer;flex:1;text-align:center;}
-.train-class.avail{border-color:#22c55e;color:#16a34a;font-weight:700;}
-.train-class.wl{border-color:#f59e0b;color:#d97706;font-weight:700;}
+.train-card {
+  border: 1px solid #334155; border-radius: 12px; padding: 20px; margin-bottom: 20px;
+  background: rgba(0, 0, 0, 0.4); transition: 0.3s;
+}
+.train-card:hover { border-color: #475569; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+.train-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 16px; margin-bottom: 16px; }
+.train-name { font-weight: 900; font-size: 1.3rem; letter-spacing: 1px; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+.train-number { color: var(--neon-blue); font-size: 1rem; font-family: 'Roboto Condensed', sans-serif; font-weight: 700; margin-top: 4px; }
+.train-classes { display: flex; gap: 12px; }
+.train-class {
+  background: rgba(15, 23, 42, 0.8); border: 1px solid #475569; padding: 12px; border-radius: 8px;
+  cursor: pointer; flex: 1; text-align: center; transition: 0.2s;
+  font-family: 'Roboto Condensed', sans-serif;
+}
+.train-class:hover { background: #1e293b; border-color: #64748b; }
+.train-class.avail { border-color: #10b981; color: #34d399; font-weight: 700; box-shadow: inset 0 0 15px rgba(16, 185, 129, 0.1); }
+.train-class.wl { border-color: #f59e0b; color: #fbbf24; font-weight: 700; box-shadow: inset 0 0 15px rgba(245, 158, 11, 0.1); }
+.train-class.avail:hover { background: rgba(16, 185, 129, 0.1); box-shadow: 0 0 20px rgba(16, 185, 129, 0.3), inset 0 0 15px rgba(16, 185, 129, 0.2); }
 
 /* STEP 2: SEATS */
-.berth-map{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px;max-height:400px;overflow-y:auto;padding-right:10px;}
-.berth{background:#fff;border:2px solid var(--border);border-radius:6px;height:40px;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;cursor:pointer;color:#94a3b8;}
-.berth.avail{border-color:var(--irctc-blue);color:var(--irctc-blue);background:#eff6ff;}
-.berth.booked{border-color:var(--irctc-red);color:var(--irctc-red);background:#fef2f2;cursor:not-allowed;}
-.berth.wl{border-color:#f59e0b;color:#f59e0b;background:#fffbeb;cursor:not-allowed;}
+.berth-map {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 24px;
+  max-height: 400px; overflow-y: auto; padding-right: 10px;
+}
+.berth-map::-webkit-scrollbar { width: 6px; }
+.berth-map::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+.berth {
+  background: rgba(0,0,0,0.5); border: 2px solid #334155; border-radius: 8px; height: 50px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; font-family: 'Roboto Condensed', sans-serif; font-weight: 900; cursor: pointer; color: #64748b;
+  transition: 0.2s;
+}
+.berth.avail { border-color: var(--neon-blue); color: #fff; background: rgba(30, 58, 138, 0.4); box-shadow: 0 0 15px rgba(59, 130, 246, 0.4), inset 0 0 10px rgba(59, 130, 246, 0.2); animation: pulse-berth 2s infinite; }
+@keyframes pulse-berth { 0%, 100% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.4), inset 0 0 10px rgba(59, 130, 246, 0.2); } 50% { box-shadow: 0 0 25px rgba(59, 130, 246, 0.8), inset 0 0 20px rgba(59, 130, 246, 0.4); } }
+.berth.booked { border-color: var(--neon-red); color: #f87171; background: rgba(127, 29, 29, 0.2); cursor: not-allowed; opacity: 0.6; }
+.berth.wl { border-color: #f59e0b; color: #fbbf24; background: rgba(120, 53, 15, 0.2); cursor: not-allowed; opacity: 0.6; }
 
 /* STEP 4: OTP */
-.otp-container{display:flex;gap:12px;justify-content:center;margin:24px 0;}
-.otp-box{width:50px;height:60px;font-size:1.5rem;text-align:center;border:2px solid var(--border);border-radius:6px;}
-.otp-box:focus{border-color:var(--irctc-blue);outline:none;}
-.otp-msg{text-align:center;color:var(--irctc-red);font-weight:700;margin-bottom:16px;min-height:24px;}
+.otp-container { display: flex; gap: 16px; justify-content: center; margin: 30px 0; }
+.otp-box {
+  width: 60px; height: 70px; font-size: 2rem; font-weight: 900; text-align: center;
+  border: 2px solid #475569; border-radius: 12px; background: rgba(0,0,0,0.6); color: #fff;
+  transition: 0.2s; font-family: 'Roboto Condensed', sans-serif;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+}
+.otp-box:focus { border-color: var(--neon-blue); outline: none; box-shadow: 0 0 20px var(--neon-blue-glow), inset 0 0 10px rgba(0,0,0,0.8); transform: translateY(-2px); }
+.otp-msg { text-align: center; color: var(--neon-red); font-weight: 900; margin-bottom: 20px; min-height: 24px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px var(--neon-red); }
 
 /* STEP 5: PAYMENT */
-.pay-options{display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
-.pay-option{border:1px solid var(--border);border-radius:6px;padding:16px;cursor:pointer;display:flex;align-items:center;gap:12px;}
-.pay-option input{transform:scale(1.2);}
+.pay-options { display: flex; flex-direction: column; gap: 16px; margin-bottom: 30px; }
+.pay-option {
+  border: 1px solid #334155; border-radius: 12px; padding: 20px; cursor: pointer;
+  display: flex; align-items: center; gap: 16px; background: rgba(0,0,0,0.4);
+  transition: 0.2s; font-weight: 700; font-size: 1.1rem;
+}
+.pay-option:hover { border-color: #64748b; background: rgba(15, 23, 42, 0.8); }
+.pay-option input { transform: scale(1.5); accent-color: var(--neon-blue); }
+.pay-option:has(input:checked) { border-color: var(--neon-blue); box-shadow: 0 0 15px rgba(59, 130, 246, 0.2); background: rgba(30, 58, 138, 0.2); }
 
 /* STEP 7: MEME */
-#meme-canvas{width:100%;max-width:600px;height:auto;border:1px solid var(--border);margin:20px auto;display:block;}
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0;}
-.stat-box{background:#f8fafc;padding:12px;border-radius:6px;border:1px solid var(--border);text-align:center;}
-.stat-num{font-size:1.5rem;font-weight:700;color:var(--irctc-blue);}
+#meme-canvas { width: 100%; max-width: 600px; height: auto; border: 1px solid var(--panel-border); margin: 30px auto; display: block; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border-radius: 8px; }
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0; }
+.stat-box { background: rgba(0,0,0,0.4); padding: 20px; border-radius: 12px; border: 1px solid #334155; text-align: center; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
+.stat-num { font-size: 2.5rem; font-weight: 900; color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue-glow); font-family: 'Roboto Condensed', sans-serif; margin-top: 8px; }
 
 /* OVERLAYS & MODALS */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;display:none;align-items:center;justify-content:center;}
-.overlay.active{display:flex;}
-.modal{background:#fff;border-radius:8px;padding:24px;width:90%;max-width:400px;text-align:center;box-shadow:0 10px 25px rgba(0,0,0,0.2);}
-.spinner{width:40px;height:40px;border:4px solid var(--border);border-top-color:var(--irctc-blue);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px;}
-@keyframes spin{to{transform:rotate(360deg);}}
-.error-msg{color:var(--irctc-red);font-weight:700;margin-top:12px;}
+.overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(8px); z-index: 1000; display: none; align-items: center; justify-content: center; }
+.overlay.active { display: flex; }
+.modal {
+  background: var(--panel-bg); border: 1px solid var(--panel-border); border-radius: 16px; padding: 40px;
+  width: 90%; max-width: 450px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 0 20px rgba(59, 130, 246, 0.1);
+}
+.spinner {
+  width: 60px; height: 60px; border: 4px solid #334155; border-top-color: var(--neon-blue); border-radius: 50%;
+  animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; margin: 0 auto 24px;
+  box-shadow: 0 0 15px var(--neon-blue-glow);
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.error-msg { color: var(--neon-red); font-weight: 900; margin-top: 16px; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px var(--neon-red); }
 
 /* CAPTCHA */
-.captcha-box{background:#f1f5f9;padding:16px;border:1px solid var(--border);border-radius:6px;margin-bottom:16px;}
-.captcha-img{font-family:'Courier New',Courier,monospace;font-size:2rem;letter-spacing:6px;color:#334155;background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="40"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.3"/></svg>');padding:10px;text-align:center;filter:blur(1px);user-select:none;margin-bottom:12px;}
+.captcha-box { background: rgba(0,0,0,0.5); padding: 24px; border: 1px solid #334155; border-radius: 12px; margin-bottom: 24px; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
+.captcha-img {
+  font-family: 'Courier New', Courier, monospace; font-size: 2.5rem; font-weight: 900; letter-spacing: 10px; color: #e2e8f0;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="40"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="1.5" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.5"/></svg>');
+  padding: 16px; text-align: center; filter: blur(1.5px) contrast(1.2); user-select: none; margin-bottom: 20px;
+  border-radius: 8px; border: 1px solid #475569;
+}
+
+/* SERVER 503 ERROR - GLITCH */
+#server-503 {
+  background: #020617; z-index: 9999; flex-direction: column; color: var(--neon-red);
+}
+.glitch-text {
+  font-size: 8rem; font-weight: 900; font-family: 'Roboto Condensed', sans-serif;
+  text-shadow: 4px 0 rgba(59, 130, 246, 0.7), -4px 0 rgba(239, 68, 68, 0.7);
+  animation: glitch 0.2s infinite; position: relative;
+}
+@keyframes glitch {
+  0% { transform: translate(0) } 20% { transform: translate(-5px, 5px) }
+  40% { transform: translate(-5px, -5px) } 60% { transform: translate(5px, 5px) }
+  80% { transform: translate(5px, -5px) } 100% { transform: translate(0) }
+}
+.glitch-sub { font-size: 2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 4px; margin-top: 10px; }
 
 /* POPUP ADS */
-.popup-ad{position:fixed;background:#fff;border:2px solid var(--irctc-red);box-shadow:0 4px 12px rgba(0,0,0,0.3);padding:20px;z-index:900;display:none;width:300px;}
-.popup-ad .close-ad{position:absolute;top:5px;right:5px;background:var(--irctc-red);color:#fff;border:none;width:24px;height:24px;cursor:pointer;font-weight:700;}
+.popup-ad {
+  position: fixed; background: rgba(15, 23, 42, 0.95); border: 2px solid var(--neon-red); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 30px var(--neon-red-glow);
+  padding: 24px; z-index: 900; display: none; width: 320px; border-radius: 12px; backdrop-filter: blur(10px);
+}
+.popup-ad .close-ad { position: absolute; top: -12px; right: -12px; background: var(--neon-red); color: #fff; border: 2px solid #991b1b; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-weight: 900; font-size: 1.1rem; box-shadow: 0 0 10px var(--neon-red); }
 
 /* TOAST */
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#334155;color:#fff;padding:12px 24px;border-radius:30px;font-weight:700;z-index:2000;opacity:0;transition:0.3s;pointer-events:none;}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(-10px);}
+.toast {
+  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: linear-gradient(90deg, var(--neon-blue), #1e3a8a); color: #fff; padding: 14px 30px;
+  border-radius: 30px; font-weight: 900; font-family: 'Roboto Condensed', sans-serif; font-size: 1.1rem; letter-spacing: 1px;
+  z-index: 2000; opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px var(--neon-blue-glow); border: 1px solid #60a5fa;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
 </head>
 <body>
@@ -108,14 +300,14 @@ header{background:var(--irctc-blue);color:#fff;padding:12px 20px;display:flex;ju
   <div class="logo-area">
     <div class="fake-logo">IR</div>
     <div>
-      <div class="rc" style="font-weight:700;font-size:1.1rem;">IRCTC</div>
-      <div style="font-size:0.7rem;color:#93c5fd;">INDIAN RAILWAYS PARODY</div>
+      <div class="rc" style="font-weight:900;font-size:1.4rem;letter-spacing:1px;text-shadow:0 0 10px rgba(255,255,255,0.3);">IRCTC</div>
+      <div style="font-size:0.75rem;color:var(--neon-blue);font-weight:700;letter-spacing:2px;">INDIAN RAILWAYS PARODY</div>
     </div>
   </div>
   <div class="header-nav">
     <span>Book Ticket</span>
     <span>PNR Status</span>
-    <span style="color:#fca5a5;cursor:pointer;">Logout</span>
+    <span style="color:var(--neon-red);text-shadow:0 0 10px var(--neon-red-glow);">Logout</span>
   </div>
 </header>
 
@@ -123,18 +315,18 @@ header{background:var(--irctc-blue);color:#fff;padding:12px 20px;display:flex;ju
 <div class="toast" id="toast">Message</div>
 
 <!-- POPUP ADS -->
-<div class="popup-ad" id="ad-1" style="top:100px;left:50px;"><button class="close-ad" onclick="this.parentElement.style.display='none'">X</button><h3 style="color:var(--irctc-red)">AC FIRST CLASS ₹8000!</h3><p>Book now! Unbelievable deals!</p></div>
-<div class="popup-ad" id="ad-2" style="bottom:100px;right:50px;"><button class="close-ad" onclick="this.parentElement.style.display='none'">X</button><h3 style="color:var(--irctc-blue)">CHEAP HOTELS</h3><p>Stay near the station. Don't sleep on the platform!</p></div>
+<div class="popup-ad" id="ad-1" style="top:120px;left:40px;"><button class="close-ad" onclick="this.parentElement.style.display='none'">X</button><h3 style="color:var(--neon-red);margin-bottom:8px;">AC FIRST CLASS ₹8000!</h3><p style="color:#cbd5e1;font-size:0.9rem;">Book now! Unbelievable deals before the server crashes!</p></div>
+<div class="popup-ad" id="ad-2" style="bottom:60px;right:40px;border-color:var(--neon-blue);box-shadow:0 10px 40px rgba(0,0,0,0.8), 0 0 30px var(--neon-blue-glow);"><button class="close-ad" onclick="this.parentElement.style.display='none'" style="background:var(--neon-blue);border-color:#1d4ed8;box-shadow:0 0 10px var(--neon-blue);">X</button><h3 style="color:var(--neon-blue);margin-bottom:8px;">CHEAP HOTELS</h3><p style="color:#cbd5e1;font-size:0.9rem;">Stay near the station. Don't sleep on the platform!</p></div>
 
 <div class="container">
   
   <!-- STEP 0: HOME -->
   <div class="screen active" id="step-0">
-    <div style="text-align:center;padding:40px 20px;">
-      <h2 class="rc" style="font-size:2rem;color:var(--irctc-dark);margin-bottom:10px;">BOOK TATKAL TICKET</h2>
+    <div style="text-align:center;padding:60px 20px;">
+      <h2 class="rc" style="font-size:2.5rem;color:#fff;margin-bottom:15px;letter-spacing:2px;text-shadow:0 4px 10px rgba(0,0,0,0.5);">BOOK TATKAL TICKET</h2>
       <div class="blink-text">⚠️ TATKAL OPENS AT 10:00 AM! GET READY!</div>
-      <div style="font-size:4rem;font-weight:700;font-family:'Courier New',Courier,monospace;margin-bottom:30px;" id="start-timer">00:05</div>
-      <button class="btn" style="font-size:1.2rem;padding:15px 40px;" id="btn-start-tatkal" disabled>ENTER TATKAL</button>
+      <div style="font-size:5.5rem;font-weight:900;font-family:'Roboto Condensed',sans-serif;margin-bottom:40px;color:var(--neon-blue);text-shadow:0 0 30px var(--neon-blue-glow);" id="start-timer">00:05</div>
+      <button class="btn" style="font-size:1.4rem;padding:20px 60px;border-radius:12px;" id="btn-start-tatkal" disabled>ENTER THE ARENA</button>
     </div>
   </div>
 
@@ -151,11 +343,11 @@ header{background:var(--irctc-blue);color:#fff;padding:12px 20px;display:flex;ju
     </div>
     <div class="form-group">
       <label>Date</label>
-      <input type="text" class="form-control" value="Tomorrow" disabled>
+      <input type="text" class="form-control" value="Tomorrow" disabled style="opacity:0.7">
     </div>
-    <button class="btn" id="btn-search-trains">SEARCH TRAINS</button>
+    <button class="btn" id="btn-search-trains" style="width:100%;margin-top:10px;">SEARCH TRAINS</button>
 
-    <div id="train-list" style="display:none;margin-top:24px;">
+    <div id="train-list" style="display:none;margin-top:40px;">
       
       <div class="train-card">
         <div class="train-head">
@@ -177,12 +369,12 @@ header{background:var(--irctc-blue);color:#fff;padding:12px 20px;display:flex;ju
         </div>
       </div>
 
-      <div class="train-card" style="border-color:var(--irctc-blue)">
+      <div class="train-card" style="border-color:var(--neon-blue); box-shadow:0 0 20px rgba(59,130,246,0.1);">
         <div class="train-head">
-          <div><div class="train-name">TATKAL SPECIAL</div><div class="train-number">09001 | 23:55 - 20:00</div></div>
+          <div><div class="train-name" style="color:var(--neon-blue);">TATKAL SPECIAL</div><div class="train-number">09001 | 23:55 - 20:00</div></div>
         </div>
         <div class="train-classes">
-          <div class="train-class avail" id="btn-select-tatkal" style="background:#eff6ff">3A<br>AVAILABLE 3</div>
+          <div class="train-class avail" id="btn-select-tatkal" style="background:rgba(30,58,138,0.4);border-color:var(--neon-blue);box-shadow:inset 0 0 20px rgba(59,130,246,0.2);">3A<br>AVAILABLE 3</div>
         </div>
       </div>
 
@@ -192,86 +384,86 @@ header{background:var(--irctc-blue);color:#fff;padding:12px 20px;display:flex;ju
   <!-- STEP 2: SEATS -->
   <div class="screen" id="step-2">
     <div class="screen-header">SEAT SELECTION</div>
-    <p style="margin-bottom:16px;color:#dc2626;font-weight:700;">Hurry! Seats are filling fast!</p>
+    <p style="margin-bottom:24px;color:var(--neon-red);font-weight:900;text-transform:uppercase;letter-spacing:1px;text-shadow:0 0 10px var(--neon-red-glow);">Hurry! The grid is collapsing!</p>
     <div class="berth-map" id="berth-map"></div>
   </div>
 
   <!-- STEP 3: PASSENGER -->
   <div class="screen" id="step-3">
     <div class="screen-header">PASSENGER DETAILS</div>
-    <div class="form-group"><label>Passenger Name</label><input type="text" class="form-control" id="p-name"></div>
-    <div class="grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-      <div class="form-group"><label>Age</label><input type="number" class="form-control" id="p-age"></div>
+    <div class="form-group"><label>Passenger Name</label><input type="text" class="form-control" id="p-name" placeholder="Enter full name"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div class="form-group"><label>Age</label><input type="number" class="form-control" id="p-age" placeholder="e.g. 28"></div>
       <div class="form-group"><label>Gender</label><select class="form-control"><option>Male</option><option>Female</option><option>Other</option></select></div>
     </div>
     <div class="form-group"><label>Berth Preference</label><select class="form-control"><option>No Preference</option><option>Lower</option></select></div>
-    <button class="btn" id="btn-add-pax" style="width:100%;">CONTINUE TO BOOKING</button>
+    <button class="btn" id="btn-add-pax" style="width:100%;margin-top:10px;">CONTINUE TO BOOKING</button>
   </div>
 
   <!-- STEP 3.5: CAPTCHA -->
   <div class="screen" id="step-3-5">
-    <div class="screen-header">VERIFICATION</div>
+    <div class="screen-header">HUMAN VERIFICATION</div>
     <div class="captcha-box">
       <div class="captcha-img">X9qWp2</div>
       <div class="form-group">
-        <label>Type the letters you see (Case sensitive)</label>
-        <input type="text" class="form-control" id="c-input">
+        <label style="color:#fff;">Type the letters you see (Case sensitive)</label>
+        <input type="text" class="form-control" id="c-input" style="font-family:'Courier New',Courier,monospace;font-size:1.5rem;letter-spacing:4px;text-align:center;">
       </div>
     </div>
-    <button class="btn" id="btn-verify-captcha" style="width:100%;">VERIFY</button>
+    <button class="btn" id="btn-verify-captcha" style="width:100%;">VERIFY & PROCEED</button>
   </div>
 
   <!-- STEP 4: OTP -->
   <div class="screen" id="step-4">
     <div class="screen-header">PAYMENT VERIFICATION</div>
-    <p style="text-align:center;">An OTP has been sent to your registered mobile ending in **89.</p>
+    <p style="text-align:center;font-size:1.1rem;color:#e2e8f0;">An OTP has been sent to your registered mobile ending in <strong style="color:var(--neon-blue)">**89</strong>.</p>
     <div class="otp-container">
       <input type="text" class="otp-box" maxlength="1" id="otp-1"><input type="text" class="otp-box" maxlength="1"><input type="text" class="otp-box" maxlength="1"><input type="text" class="otp-box" maxlength="1">
     </div>
     <div class="otp-msg" id="otp-msg"></div>
-    <div style="text-align:center;margin-bottom:20px;font-weight:700;color:var(--irctc-red)" id="otp-countdown">OTP expires in: 30s</div>
-    <button class="btn" id="btn-verify-otp" style="width:100%;">SUBMIT OTP</button>
+    <div style="text-align:center;margin-bottom:30px;font-weight:900;color:var(--neon-red);font-size:1.2rem;letter-spacing:2px;text-shadow:0 0 10px var(--neon-red-glow);" id="otp-countdown">OTP EXPIRES IN: 30s</div>
+    <button class="btn" id="btn-verify-otp" style="width:100%;padding:16px;">SUBMIT OTP</button>
   </div>
 
   <!-- STEP 5: PAYMENT -->
   <div class="screen" id="step-5">
-    <div class="screen-header">MAKE PAYMENT</div>
-    <div style="background:#eff6ff;padding:16px;border-radius:6px;margin-bottom:24px;border:1px solid #bfdbfe;">
-      <h3 class="rc">Total Amount: ₹1,247.00</h3>
-      <div style="font-size:0.8rem;color:#64748b;">Includes Tatkal Charges ₹400 & Convenience Fee ₹17.70</div>
+    <div class="screen-header">PAYMENT GATEWAY</div>
+    <div style="background:rgba(0,0,0,0.5);padding:24px;border-radius:12px;margin-bottom:30px;border:1px solid #334155;text-align:center;box-shadow:inset 0 0 20px rgba(0,0,0,0.8);">
+      <h3 class="rc" style="font-size:2rem;color:var(--neon-blue);text-shadow:0 0 15px var(--neon-blue-glow);">TOTAL: ₹1,247.00</h3>
+      <div style="font-size:0.85rem;color:#94a3b8;margin-top:8px;">Includes Tatkal Charges ₹400 & Convenience Fee ₹17.70</div>
     </div>
 
     <div class="pay-options" id="pay-options">
       <label class="pay-option"><input type="radio" name="pay" value="upi" checked> <span>UPI / BHIM (Google Pay, PhonePe)</span></label>
-      <div id="upi-box" style="padding:0 16px 16px;">
-        <input type="text" class="form-control" placeholder="Enter VPA / UPI ID">
+      <div id="upi-box" style="padding:0 20px 20px;">
+        <input type="text" class="form-control" placeholder="Enter VPA / UPI ID (e.g. user@bank)">
       </div>
       <label class="pay-option"><input type="radio" name="pay" value="net"> <span>Net Banking</span></label>
-      <div id="net-box" style="padding:0 16px 16px;display:none;">
+      <div id="net-box" style="padding:0 20px 20px;display:none;">
         <select class="form-control"><option>State Bank of India</option><option>HDFC Bank</option><option>ICICI Bank</option><option>Bank of Baroda</option></select>
       </div>
-      <label class="pay-option"><input type="radio" name="pay" value="card"> <span>Debit/Credit Card</span></label>
+      <label class="pay-option"><input type="radio" name="pay" value="card"> <span>Debit / Credit Card</span></label>
     </div>
-    <button class="btn red" id="btn-pay" style="width:100%;font-size:1.2rem;padding:15px;">PAY NOW</button>
+    <button class="btn red" id="btn-pay" style="width:100%;font-size:1.4rem;padding:18px;border-radius:12px;">AUTHORIZE PAYMENT</button>
   </div>
 
   <!-- STEP 7: MEME ENDING -->
   <div class="screen" id="step-7">
     <div style="text-align:center;">
-      <h1 class="rc" style="font-size:4rem;color:var(--irctc-red);line-height:1;">WL/67 🎉</h1>
-      <p style="font-size:1.2rem;color:#64748b;margin:10px 0 20px;">You fought valiantly. The queue thanks you for your service.</p>
+      <h1 class="rc" style="font-size:5rem;color:var(--neon-red);line-height:1;text-shadow:0 0 30px var(--neon-red-glow);">WL/67 🎉</h1>
+      <p style="font-size:1.3rem;color:#cbd5e1;margin:15px 0 30px;">You fought valiantly. The algorithm thanks you for your service.</p>
       
       <div class="stat-grid">
-        <div class="stat-box"><div style="font-size:0.8rem;color:#64748b;">TIME TAKEN</div><div class="stat-num" id="end-time">0m 0s</div></div>
-        <div class="stat-box"><div style="font-size:0.8rem;color:#64748b;">OTP ATTEMPTS</div><div class="stat-num" id="end-otp">3</div></div>
-        <div class="stat-box"><div style="font-size:0.8rem;color:#64748b;">PAYMENT FAILS</div><div class="stat-num" id="end-fails">2</div></div>
-        <div class="stat-box"><div style="font-size:0.8rem;color:#64748b;">SURVIVAL SCORE</div><div class="stat-num" id="end-score" style="color:var(--irctc-red)">12/100</div></div>
+        <div class="stat-box"><div style="font-size:0.85rem;color:#94a3b8;margin-bottom:5px;font-weight:700;letter-spacing:1px;">TIME TAKEN</div><div class="stat-num" id="end-time">0m 0s</div></div>
+        <div class="stat-box"><div style="font-size:0.85rem;color:#94a3b8;margin-bottom:5px;font-weight:700;letter-spacing:1px;">OTP ATTEMPTS</div><div class="stat-num" id="end-otp">3</div></div>
+        <div class="stat-box"><div style="font-size:0.85rem;color:#94a3b8;margin-bottom:5px;font-weight:700;letter-spacing:1px;">PAYMENT FAILS</div><div class="stat-num" id="end-fails">2</div></div>
+        <div class="stat-box"><div style="font-size:0.85rem;color:#94a3b8;margin-bottom:5px;font-weight:700;letter-spacing:1px;">SURVIVAL SCORE</div><div class="stat-num" id="end-score" style="color:var(--neon-red);text-shadow:0 0 15px var(--neon-red-glow);">12/100</div></div>
       </div>
 
       <canvas id="meme-canvas" width="600" height="300"></canvas>
       
-      <div style="margin-top:24px;display:flex;gap:16px;justify-content:center;">
-        <button class="btn" onclick="location.reload()">TRY AGAIN (God help you)</button>
+      <div style="margin-top:40px;display:flex;gap:20px;justify-content:center;">
+        <button class="btn" onclick="location.reload()" style="padding:16px 40px;font-size:1.2rem;">REBOOT SYSTEM</button>
       </div>
     </div>
   </div>
@@ -282,17 +474,17 @@ header{background:var(--irctc-blue);color:#fff;padding:12px 20px;display:flex;ju
 <div class="overlay" id="loading-overlay">
   <div class="modal">
     <div class="spinner"></div>
-    <div class="rc" style="font-size:1.2rem;" id="loading-text">PROCESSING...</div>
+    <div class="rc" style="font-size:1.5rem;font-weight:900;letter-spacing:2px;color:var(--text-main);" id="loading-text">PROCESSING...</div>
     <div class="error-msg" id="loading-error" style="display:none;"></div>
-    <button class="btn" id="btn-retry-loading" style="display:none;margin-top:16px;width:100%;">RETRY</button>
+    <button class="btn" id="btn-retry-loading" style="display:none;margin-top:24px;width:100%;">RETRY CONNECTION</button>
   </div>
 </div>
 
-<div class="overlay" id="server-503" style="background:#fff;z-index:9999;">
-  <div style="text-align:center;color:#000;">
-    <h1 style="font-size:4rem;margin-bottom:20px;">503</h1>
-    <h2>Service Unavailable</h2>
-    <p>The server is temporarily unable to service your request due to maintenance downtime or capacity problems. Please try again later.</p>
+<div class="overlay" id="server-503">
+  <div style="text-align:center;">
+    <div class="glitch-text" data-text="503">503</div>
+    <div class="glitch-sub" style="color:#fff;">Service Unavailable</div>
+    <p style="color:#cbd5e1;margin-top:20px;max-width:400px;line-height:1.6;">The server is temporarily unable to service your request due to extreme capacity problems. Your hopes are crushed.</p>
   </div>
 </div>
 
