@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Great Indian Reservation</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--irctc-blue:#1a56db;--irctc-dark:#1e3a8a;--irctc-red:#dc2626;--bg:#f3f4f6;--text:#1f2937;--border:#cbd5e1;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+h1,h2,h3,.rc{font-family:'Roboto Condensed',sans-serif;}
+
+/* NAV */
+header{background:var(--irctc-blue);color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,0.2);position:sticky;top:0;z-index:100;}
+.logo-area{display:flex;align-items:center;gap:12px;}
+.fake-logo{width:40px;height:40px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--irctc-blue);font-weight:900;font-family:'Roboto Condensed',sans-serif;font-size:1.2rem;}
+.header-nav{display:flex;gap:16px;font-size:0.85rem;}
+@media(max-width:600px){.header-nav{display:none;}}
+
+/* GLOBAL TIMER */
+.global-timer{position:fixed;top:60px;right:20px;background:#fff;border:2px solid var(--irctc-blue);color:var(--irctc-blue);padding:8px 16px;border-radius:4px;font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:1.2rem;z-index:90;box-shadow:0 4px 6px rgba(0,0,0,0.1);display:none;}
+.global-timer.danger{color:var(--irctc-red);border-color:var(--irctc-red);animation:pulse-timer 1s infinite;}
+@keyframes pulse-timer{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+
+/* CONTAINER & SCREENS */
+.container{max-width:800px;margin:20px auto;padding:0 16px;}
+.screen{display:none;background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.05);padding:24px;}
+.screen.active{display:block;}
+
+.screen-header{background:var(--irctc-dark);color:#fff;padding:12px 16px;margin:-24px -24px 24px -24px;border-radius:8px 8px 0 0;font-family:'Roboto Condensed',sans-serif;font-size:1.2rem;}
+
+/* BUTTONS */
+.btn{background:var(--irctc-blue);color:#fff;border:none;padding:10px 20px;font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;border-radius:4px;transition:0.2s;text-transform:uppercase;}
+.btn:hover{background:var(--irctc-dark);}
+.btn.red{background:var(--irctc-red);}
+.btn.red:hover{background:#b91c1c;}
+.btn:disabled{background:#94a3b8;cursor:not-allowed;}
+
+/* FORMS */
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:0.85rem;color:#64748b;margin-bottom:6px;font-weight:600;}
+.form-control{width:100%;padding:10px;border:1px solid var(--border);border-radius:4px;font-family:'Nunito',sans-serif;font-size:1rem;}
+.form-control:focus{outline:none;border-color:var(--irctc-blue);box-shadow:0 0 0 2px rgba(26,86,219,0.2);}
+
+/* STEP 0: HOME */
+.blink-text{color:var(--irctc-red);animation:blink 0.5s infinite;font-weight:700;font-size:1.5rem;margin-bottom:20px;text-align:center;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* STEP 1: TRAIN LIST */
+.train-card{border:1px solid var(--border);border-radius:6px;padding:16px;margin-bottom:16px;background:#f8fafc;}
+.train-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e2e8f0;padding-bottom:12px;margin-bottom:12px;}
+.train-name{font-weight:700;font-size:1.1rem;}
+.train-number{color:#64748b;font-size:0.9rem;}
+.train-classes{display:flex;gap:10px;}
+.train-class{background:#fff;border:1px solid var(--border);padding:8px 12px;border-radius:4px;cursor:pointer;flex:1;text-align:center;}
+.train-class.avail{border-color:#22c55e;color:#16a34a;font-weight:700;}
+.train-class.wl{border-color:#f59e0b;color:#d97706;font-weight:700;}
+
+/* STEP 2: SEATS */
+.berth-map{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px;max-height:400px;overflow-y:auto;padding-right:10px;}
+.berth{background:#fff;border:2px solid var(--border);border-radius:6px;height:40px;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;cursor:pointer;color:#94a3b8;}
+.berth.avail{border-color:var(--irctc-blue);color:var(--irctc-blue);background:#eff6ff;}
+.berth.booked{border-color:var(--irctc-red);color:var(--irctc-red);background:#fef2f2;cursor:not-allowed;}
+.berth.wl{border-color:#f59e0b;color:#f59e0b;background:#fffbeb;cursor:not-allowed;}
+
+/* STEP 4: OTP */
+.otp-container{display:flex;gap:12px;justify-content:center;margin:24px 0;}
+.otp-box{width:50px;height:60px;font-size:1.5rem;text-align:center;border:2px solid var(--border);border-radius:6px;}
+.otp-box:focus{border-color:var(--irctc-blue);outline:none;}
+.otp-msg{text-align:center;color:var(--irctc-red);font-weight:700;margin-bottom:16px;min-height:24px;}
+
+/* STEP 5: PAYMENT */
+.pay-options{display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
+.pay-option{border:1px solid var(--border);border-radius:6px;padding:16px;cursor:pointer;display:flex;align-items:center;gap:12px;}
+.pay-option input{transform:scale(1.2);}
+
+/* STEP 7: MEME */
+#meme-canvas{width:100%;max-width:600px;height:auto;border:1px solid var(--border);margin:20px auto;display:block;}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0;}
+.stat-box{background:#f8fafc;padding:12px;border-radius:6px;border:1px solid var(--border);text-align:center;}
+.stat-num{font-size:1.5rem;font-weight:700;color:var(--irctc-blue);}
+
+/* OVERLAYS & MODALS */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:1000;display:none;align-items:center;justify-content:center;}
+.overlay.active{display:flex;}
+.modal{background:#fff;border-radius:8px;padding:24px;width:90%;max-width:400px;text-align:center;box-shadow:0 10px 25px rgba(0,0,0,0.2);}
+.spinner{width:40px;height:40px;border:4px solid var(--border);border-top-color:var(--irctc-blue);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.error-msg{color:var(--irctc-red);font-weight:700;margin-top:12px;}
+
+/* CAPTCHA */
+.captcha-box{background:#f1f5f9;padding:16px;border:1px solid var(--border);border-radius:6px;margin-bottom:16px;}
+.captcha-img{font-family:'Courier New',Courier,monospace;font-size:2rem;letter-spacing:6px;color:#334155;background:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="40"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.3"/></svg>');padding:10px;text-align:center;filter:blur(1px);user-select:none;margin-bottom:12px;}
+
+/* POPUP ADS */
+.popup-ad{position:fixed;background:#fff;border:2px solid var(--irctc-red);box-shadow:0 4px 12px rgba(0,0,0,0.3);padding:20px;z-index:900;display:none;width:300px;}
+.popup-ad .close-ad{position:absolute;top:5px;right:5px;background:var(--irctc-red);color:#fff;border:none;width:24px;height:24px;cursor:pointer;font-weight:700;}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#334155;color:#fff;padding:12px 24px;border-radius:30px;font-weight:700;z-index:2000;opacity:0;transition:0.3s;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-10px);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-area">
+    <div class="fake-logo">IR</div>
+    <div>
+      <div class="rc" style="font-weight:700;font-size:1.1rem;">IRCTC</div>
+      <div style="font-size:0.7rem;color:#93c5fd;">INDIAN RAILWAYS PARODY</div>
+    </div>
+  </div>
+  <div class="header-nav">
+    <span>Book Ticket</span>
+    <span>PNR Status</span>
+    <span style="color:#fca5a5;cursor:pointer;">Logout</span>
+  </div>
+</header>
+
+<div class="global-timer" id="global-timer">10:00:00</div>
+<div class="toast" id="toast">Message</div>
+
+<!-- POPUP ADS -->
+<div class="popup-ad" id="ad-1" style="top:100px;left:50px;"><button class="close-ad" onclick="this.parentElement.style.display='none'">X</button><h3 style="color:var(--irctc-red)">AC FIRST CLASS ₹8000!</h3><p>Book now! Unbelievable deals!</p></div>
+<div class="popup-ad" id="ad-2" style="bottom:100px;right:50px;"><button class="close-ad" onclick="this.parentElement.style.display='none'">X</button><h3 style="color:var(--irctc-blue)">CHEAP HOTELS</h3><p>Stay near the station. Don't sleep on the platform!</p></div>
+
+<div class="container">
+  
+  <!-- STEP 0: HOME -->
+  <div class="screen active" id="step-0">
+    <div style="text-align:center;padding:40px 20px;">
+      <h2 class="rc" style="font-size:2rem;color:var(--irctc-dark);margin-bottom:10px;">BOOK TATKAL TICKET</h2>
+      <div class="blink-text">⚠️ TATKAL OPENS AT 10:00 AM! GET READY!</div>
+      <div style="font-size:4rem;font-weight:700;font-family:'Courier New',Courier,monospace;margin-bottom:30px;" id="start-timer">00:05</div>
+      <button class="btn" style="font-size:1.2rem;padding:15px 40px;" id="btn-start-tatkal" disabled>ENTER TATKAL</button>
+    </div>
+  </div>
+
+  <!-- STEP 1: TRAIN LIST -->
+  <div class="screen" id="step-1">
+    <div class="screen-header">SELECT TRAIN — TATKAL QUOTA</div>
+    <div class="form-group">
+      <label>From Station</label>
+      <select class="form-control" id="s1-from"><option>NEW DELHI (NDLS)</option><option>MUMBAI CENTRAL (MMCT)</option></select>
+    </div>
+    <div class="form-group">
+      <label>To Station</label>
+      <select class="form-control" id="s1-to"><option>HOWRAH (HWH)</option><option>BENGALURU (SBC)</option></select>
+    </div>
+    <div class="form-group">
+      <label>Date</label>
+      <input type="text" class="form-control" value="Tomorrow" disabled>
+    </div>
+    <button class="btn" id="btn-search-trains">SEARCH TRAINS</button>
+
+    <div id="train-list" style="display:none;margin-top:24px;">
+      
+      <div class="train-card">
+        <div class="train-head">
+          <div><div class="train-name">RAJDHANI EXP</div><div class="train-number">12302 | 16:50 - 10:05</div></div>
+        </div>
+        <div class="train-classes">
+          <div class="train-class avail" onclick="trainError()">3A<br>AVAILABLE 4</div>
+          <div class="train-class wl" onclick="trainError()">2A<br>WL 34</div>
+        </div>
+      </div>
+
+      <div class="train-card">
+        <div class="train-head">
+          <div><div class="train-name">SAMPARK KRANTI</div><div class="train-number">12218 | 13:30 - 08:45</div></div>
+        </div>
+        <div class="train-classes">
+          <div class="train-class wl" onclick="trainError()">SL<br>WL 102</div>
+          <div class="train-class wl" onclick="trainError()">3A<br>WL 12</div>
+        </div>
+      </div>
+
+      <div class="train-card" style="border-color:var(--irctc-blue)">
+        <div class="train-head">
+          <div><div class="train-name">TATKAL SPECIAL</div><div class="train-number">09001 | 23:55 - 20:00</div></div>
+        </div>
+        <div class="train-classes">
+          <div class="train-class avail" id="btn-select-tatkal" style="background:#eff6ff">3A<br>AVAILABLE 3</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- STEP 2: SEATS -->
+  <div class="screen" id="step-2">
+    <div class="screen-header">SEAT SELECTION</div>
+    <p style="margin-bottom:16px;color:#dc2626;font-weight:700;">Hurry! Seats are filling fast!</p>
+    <div class="berth-map" id="berth-map"></div>
+  </div>
+
+  <!-- STEP 3: PASSENGER -->
+  <div class="screen" id="step-3">
+    <div class="screen-header">PASSENGER DETAILS</div>
+    <div class="form-group"><label>Passenger Name</label><input type="text" class="form-control" id="p-name"></div>
+    <div class="grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="form-group"><label>Age</label><input type="number" class="form-control" id="p-age"></div>
+      <div class="form-group"><label>Gender</label><select class="form-control"><option>Male</option><option>Female</option><option>Other</option></select></div>
+    </div>
+    <div class="form-group"><label>Berth Preference</label><select class="form-control"><option>No Preference</option><option>Lower</option></select></div>
+    <button class="btn" id="btn-add-pax" style="width:100%;">CONTINUE TO BOOKING</button>
+  </div>
+
+  <!-- STEP 3.5: CAPTCHA -->
+  <div class="screen" id="step-3-5">
+    <div class="screen-header">VERIFICATION</div>
+    <div class="captcha-box">
+      <div class="captcha-img">X9qWp2</div>
+      <div class="form-group">
+        <label>Type the letters you see (Case sensitive)</label>
+        <input type="text" class="form-control" id="c-input">
+      </div>
+    </div>
+    <button class="btn" id="btn-verify-captcha" style="width:100%;">VERIFY</button>
+  </div>
+
+  <!-- STEP 4: OTP -->
+  <div class="screen" id="step-4">
+    <div class="screen-header">PAYMENT VERIFICATION</div>
+    <p style="text-align:center;">An OTP has been sent to your registered mobile ending in **89.</p>
+    <div class="otp-container">
+      <input type="text" class="otp-box" maxlength="1" id="otp-1"><input type="text" class="otp-box" maxlength="1"><input type="text" class="otp-box" maxlength="1"><input type="text" class="otp-box" maxlength="1">
+    </div>
+    <div class="otp-msg" id="otp-msg"></div>
+    <div style="text-align:center;margin-bottom:20px;font-weight:700;color:var(--irctc-red)" id="otp-countdown">OTP expires in: 30s</div>
+    <button class="btn" id="btn-verify-otp" style="width:100%;">SUBMIT OTP</button>
+  </div>
+
+  <!-- STEP 5: PAYMENT -->
+  <div class="screen" id="step-5">
+    <div class="screen-header">MAKE PAYMENT</div>
+    <div style="background:#eff6ff;padding:16px;border-radius:6px;margin-bottom:24px;border:1px solid #bfdbfe;">
+      <h3 class="rc">Total Amount: ₹1,247.00</h3>
+      <div style="font-size:0.8rem;color:#64748b;">Includes Tatkal Charges ₹400 & Convenience Fee ₹17.70</div>
+    </div>
+
+    <div class="pay-options" id="pay-options">
+      <label class="pay-option"><input type="radio" name="pay" value="upi" checked> <span>UPI / BHIM (Google Pay, PhonePe)</span></label>
+      <div id="upi-box" style="padding:0 16px 16px;">
+        <input type="text" class="form-control" placeholder="Enter VPA / UPI ID">
+      </div>
+      <label class="pay-option"><input type="radio" name="pay" value="net"> <span>Net Banking</span></label>
+      <div id="net-box" style="padding:0 16px 16px;display:none;">
+        <select class="form-control"><option>State Bank of India</option><option>HDFC Bank</option><option>ICICI Bank</option><option>Bank of Baroda</option></select>
+      </div>
+      <label class="pay-option"><input type="radio" name="pay" value="card"> <span>Debit/Credit Card</span></label>
+    </div>
+    <button class="btn red" id="btn-pay" style="width:100%;font-size:1.2rem;padding:15px;">PAY NOW</button>
+  </div>
+
+  <!-- STEP 7: MEME ENDING -->
+  <div class="screen" id="step-7">
+    <div style="text-align:center;">
+      <h1 class="rc" style="font-size:4rem;color:var(--irctc-red);line-height:1;">WL/67 🎉</h1>
+      <p style="font-size:1.2rem;color:#64748b;margin:10px 0 20px;">You fought valiantly. The queue thanks you for your service.</p>
+      
+      <div class="stat-grid">
+        <div class="stat-box"><div style="font-size:0.8rem;color:#64748b;">TIME TAKEN</div><div class="stat-num" id="end-time">0m 0s</div></div>
+        <div class="stat-box"><div style="font-size:0.8rem;color:#64748b;">OTP ATTEMPTS</div><div class="stat-num" id="end-otp">3</div></div>
+        <div class="stat-box"><div style="font-size:0.8rem;color:#64748b;">PAYMENT FAILS</div><div class="stat-num" id="end-fails">2</div></div>
+        <div class="stat-box"><div style="font-size:0.8rem;color:#64748b;">SURVIVAL SCORE</div><div class="stat-num" id="end-score" style="color:var(--irctc-red)">12/100</div></div>
+      </div>
+
+      <canvas id="meme-canvas" width="600" height="300"></canvas>
+      
+      <div style="margin-top:24px;display:flex;gap:16px;justify-content:center;">
+        <button class="btn" onclick="location.reload()">TRY AGAIN (God help you)</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- OVERLAYS -->
+<div class="overlay" id="loading-overlay">
+  <div class="modal">
+    <div class="spinner"></div>
+    <div class="rc" style="font-size:1.2rem;" id="loading-text">PROCESSING...</div>
+    <div class="error-msg" id="loading-error" style="display:none;"></div>
+    <button class="btn" id="btn-retry-loading" style="display:none;margin-top:16px;width:100%;">RETRY</button>
+  </div>
+</div>
+
+<div class="overlay" id="server-503" style="background:#fff;z-index:9999;">
+  <div style="text-align:center;color:#000;">
+    <h1 style="font-size:4rem;margin-bottom:20px;">503</h1>
+    <h2>Service Unavailable</h2>
+    <p>The server is temporarily unable to service your request due to maintenance downtime or capacity problems. Please try again later.</p>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
